@@ -1,0 +1,77 @@
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    
+<style>
+    .card {
+        margin: 10px;
+    }
+</style>
+
+
+</head>
+
+<body>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-info">
+        <strong>{{message}}</strong>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <nav class="navbar navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">
+            TODO APP
+        </a>
+    </nav>
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-3 card">
+                <div class="submit_form">
+                    <form method="POST" class='card-body'>
+                        {% csrf_token %}
+                        {{forms|crispy}}
+                        <div>
+                            <input type="submit" class="btn btn-primary" value="create" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+
+                {% for i in list %}
+                <div class="card">
+                    <div class="card-body">
+                    <h5 class='card-title'>{{i.title}}</h5>
+                    <p class="card-body">
+                        {{i.date}}
+                        {{i.details}}
+                    </p>
+                    <form action="/del/{{i.id}}" method="POST" style=" padding-right: 4%; padding-bottom: 3%;">
+                        {% csrf_token %}
+                        <button value="remove" type="submit" class="btn btn-danger"
+                            style="float: right;">remove</button>
+                    </form>
+                </div>
+                </div>
+                {% endfor%}
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
