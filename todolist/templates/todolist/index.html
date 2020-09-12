@@ -74,7 +74,7 @@
                                 <li class="list-inline-item">
 
                                     <button class="form-control btn btn-primary mr-2" value="edit"
-                                        onclick="make_form_editable({{i.id}})">edit</button>
+                                        id="edit_btn_{{i.id}}" onclick="make_form_editable({{i.id}})">edit</button>
 
                                     <button class="form-control btn btn-primary mr-2" value="update" type="submit"
                                         onclick="submit_update({{i.id}})">update</button>
@@ -101,15 +101,50 @@
 <script>
 
     function make_form_editable(item_id) {
-       
+        console.log(item_id)
+        console.log('here' + item_id)
         title = document.getElementById("title_" + item_id)
         title.removeAttribute('readonly')
         details = document.getElementById("details_" + item_id)
         details.removeAttribute('readonly')
-        
+        date = document.getElementById("date_" + item_id)
+        date.removeAttribute('readonly')
+        console.log('here' + item_id)
+
+        old_date = date.value
+        console.log('here' + item_id)
+
+        date.setAttribute('value', document.getElementById('id_date').value)
+        console.log('here' + item_id)
+
+        edit_btn = document.getElementById("edit_btn_" + item_id)
+        console.log(1)
+        edit_btn.setAttribute('onclick', `make_form_not_editable(${item_id}, "${old_date}")`)
+        edit_btn.innerText = "Cancel"
+
         return true;
 
     }
+
+    function make_form_not_editable(item_id, old_date) {
+
+        title = document.getElementById("title_" + item_id)
+        title.setAttribute('readonly', 'true')
+        details = document.getElementById("details_" + item_id)
+        details.setAttribute('readonly', 'true')
+        date = document.getElementById("date_" + item_id)
+        date.setAttribute('readonly', 'true')
+        date.setAttribute('value', old_date)
+        edit_btn = document.getElementById("edit_btn_" + item_id)
+        edit_btn.setAttribute('onclick', `make_form_editable(${item_id})`)
+        edit_btn.innerText = "Edit"
+
+        return true;
+
+    }
+
+
+
     function submit_delete(item_id) {
 
         form = document.getElementById("form_" + item_id)

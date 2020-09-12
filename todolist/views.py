@@ -43,10 +43,10 @@ def update(request, item_id):
     if request.method == "POST":
         instance = TodoModel.objects.get(id=item_id)
         form = TodoForm(request.POST or None, instance=instance)
-        new_data = form.data.copy()
-        new_data['date'] = parser.parse(
-            form.data['date']).strftime('%Y-%m-%d %H:%M:%S')
-        form.data = new_data
+        #new_data = form.data.copy()
+        #new_data['date'] = parser.parse(
+         #   form.data['date']).strftime('%Y-%m-%d %H:%M:%S')
+        #form.data = new_data
 
         if form.is_valid():
             form.save()
