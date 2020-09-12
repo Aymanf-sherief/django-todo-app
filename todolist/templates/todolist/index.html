@@ -11,12 +11,12 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    
-<style>
-    .card {
-        margin: 10px;
-    }
-</style>
+
+    <style>
+        .card {
+            margin: 10px;
+        }
+    </style>
 
 
 </head>
@@ -53,25 +53,79 @@
             <div class="col-md-8">
 
                 {% for i in list %}
-                <div class="card">
-                    <div class="card-body">
-                    <h5 class='card-title'>{{i.title}}</h5>
-                    <p class="card-body">
-                        {{i.date}}
-                        {{i.details}}
-                    </p>
-                    <form action="/del/{{i.id}}" method="POST" style=" padding-right: 4%; padding-bottom: 3%;">
+                <div class="card" id="item_{{i.id}}">
+                    <form id="form_{{i.id}}" class="form-inline " action="#" method="POST"
+                        onsubmit="event.preventDefault();">
                         {% csrf_token %}
-                        <button value="remove" type="submit" class="btn btn-danger"
-                            style="float: right;">remove</button>
+                        <div class="container">
+                            <ul class="list-inline">
+                                <li class="list-inline-item pull-left">
+                                    <input id="title_{{i.id}}" name="title" type="text" maxlength="100" required
+                                        readonly class="h4 card-title form-control-plaintext" value="{{i.title}}">
+                                </li>
+                                <input id="date_{{i.id}}" name="date" type="text" required readonly
+                                    class="card-title form-control-plaintext" value="{{i.date}}">
+                                <br>
+                                <li class="list-inline-item">
+                                    <input id="details_{{i.id}}" name="details" required readonly
+                                        class="card-title form-control-plaintext" value="{{i.details}}">
+                                </li>
+                                <br>
+                                <li class="list-inline-item">
+
+                                    <button class="form-control btn btn-primary mr-2" value="edit"
+                                        onclick="make_form_editable({{i.id}})">edit</button>
+
+                                    <button class="form-control btn btn-primary mr-2" value="update" type="submit"
+                                        onclick="submit_update({{i.id}})">update</button>
+
+                                </li>
+                                <li class="list-inline-item float-right">
+
+                                    <button value="remove" type="submit" class="btn btn-danger"
+                                        onclick="submit_delete({{i.id}})">remove</button>
+
+                                </li>
+                            </ul>
+                        </div>
                     </form>
                 </div>
-                </div>
                 {% endfor%}
-            </div>
 
+            </div>
         </div>
+
+    </div>
     </div>
 </body>
+<script>
+
+    function make_form_editable(item_id) {
+       
+        title = document.getElementById("title_" + item_id)
+        title.removeAttribute('readonly')
+        details = document.getElementById("details_" + item_id)
+        details.removeAttribute('readonly')
+        
+        return true;
+
+    }
+    function submit_delete(item_id) {
+
+        form = document.getElementById("form_" + item_id)
+        form.setAttribute('action', '/del/' + item_id)
+        form.submit()
+        return false;
+
+    }
+    function submit_update(item_id) {
+        console.log(item_id)
+        form = document.getElementById("form_" + item_id)
+        form.setAttribute('action', '/update/' + item_id)
+        form.submit()
+        return false;
+
+    }
+</script>
 
 </html>
